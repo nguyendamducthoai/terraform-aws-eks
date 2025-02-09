@@ -105,6 +105,10 @@ module "eks_blueprints_addons" {
   enable_cert_manager                    = false
   enable_argocd = true
 
+  kube_prometheus_stack = {
+    namespace = "monitoring"
+  } 
+
   tags = {
     Environment = "dev"
   }
