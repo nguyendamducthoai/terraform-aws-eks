@@ -45,10 +45,10 @@ module "eks_bottlerocket" {
       instance_types = ["t3.medium"]
 
       min_size = 1
-      max_size = 1
+      max_size = 2
       # This value is ignored after the initial creation
       # https://github.com/bryantbiggs/eks-desired-size-hack
-      desired_size = 1
+      desired_size = 2
 
       # This is not required - demonstrates how to pass additional configuration
       # Ref https://bottlerocket.dev/en/os/1.19.x/api/settings/
@@ -108,4 +108,28 @@ module "eks_blueprints_addons" {
   tags = {
     Environment = "dev"
   }
+}
+
+module "eks_blueprints_addon" {
+  source = "aws-ia/eks-blueprints-addon/aws"
+  version = "~> 1.0" #ensure to update this to the latest/desired version
+  chart            = "keda"
+  chart_version    = "2.16.1"
+  repository       = "https://kedacore.github.io/charts"
+  description      = "Keda"
+  namespace        = "keda"
+  create_namespace = true
+
+  set = [
+    {
+      name  = "clusterName"
+      value = "eks-blueprints-addon-example"
+    }
+  ]
+
+  tags = {
+    Environment = "dev"
+  }
+
+  
 }
